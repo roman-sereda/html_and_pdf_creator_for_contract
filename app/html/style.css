@@ -1,5 +1,4 @@
-def get_form_css
-".title{
+.title{
   text-align: center;
 }
 
@@ -29,6 +28,5 @@ def get_form_css
 }
 
 p {
-   text-indent: 20px; 
-}"
-end
+   text-indent: 20px;
+}

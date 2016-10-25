@@ -1,29 +1,24 @@
-require_relative "form"
-require_relative "style"
+require 'erb'
 
-def create_html(name, cssname)
-read_file
-create_and_write_files(name, cssname)
+module CreateHtmlFile
+  class Html
 
-end
+    def create_html
+      read_file
+      create_html
+    end
 
-def read_file
-  @data = {}
-  num = [:town, :time, :buyer_name, :seller_name, :enterprise_name]
+    def create_html
+      create_rendered_file(File.read("#{File.dirname(__FILE__)}/form.html.erb"), "html")
+      create_rendered_file(File.read("#{File.dirname(__FILE__)}/style.css"), "css")
+    end
 
-  File.open("././create.txt") do |f|
-    f.each_with_index do |line, i|
-      @data[num[i]] = line
-      i+=1
+    def create_rendered_file (temp_file, expansion)
+      rendered = ERB.new(temp_file)
+      result = rendered.result()
+      File.open("#{File.dirname(__FILE__)}/../../contract."+expansion, "w") {|f|
+        f.write(result)
+      }
     end
   end
-end
-
-def create_and_write_files(name, cssname)
-  File.open("././"+name, "w") {|f|
-    f.write(get_form_html)
-  }
-  File.open("././"+cssname, "w") {|f|
-    f.write(get_form_css)
-  }
 end

@@ -1,5 +1,5 @@
-require_relative "html/create_html"
-require_relative "pdf/create_pdf"
+require_relative "html/create_html.rb"
+require_relative "pdf/create_pdf.rb"
 
 def create
   p "Press 1 to create html"
@@ -8,12 +8,31 @@ def create
   choice = gets
   choice = choice.chop
 
-  if(choice == "1")
-    p "asdas"
-    create_html("contract.html", "contract.css")
-  elsif(choice == "2")
-    create_pdf("contract.pdf")
+  read_settings_file
+
+  make_file choice
+end
+
+def read_settings_file
+  @data = {}
+  num = [:town, :time, :buyer_name, :seller_name, :enterprise_name]
+  File.open("#{File.dirname(__FILE__)}/../create.txt") do |f|
+    f.each_with_index do |line, count|
+      @data[num[count]] = line
+      count+=1
+    end
   end
 end
 
-create
+def make_file choice
+  if(choice == "1")
+    include CreateHtmlFile
+    new_file = Html.new()
+    new_file.create_html
+  elsif(choice == "2")
+    create_pdf
+  end
+end
+
+
+ create
