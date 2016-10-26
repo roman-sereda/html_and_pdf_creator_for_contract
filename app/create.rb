@@ -1,5 +1,5 @@
-require_relative "html/create_html.rb"
-require_relative "pdf/create_pdf.rb"
+require_relative "../lib/create_html.rb"
+require_relative "../lib/create_pdf.rb"
 
 def create
   p "Press 1 to create html"
@@ -14,11 +14,11 @@ def create
 end
 
 def read_settings_file
-  @data = {}
+  $data = {}
   num = [:town, :time, :buyer_name, :seller_name, :enterprise_name]
   File.open("#{File.dirname(__FILE__)}/../create.txt") do |f|
     f.each_with_index do |line, count|
-      @data[num[count]] = line
+      $data[num[count]] = line
       count+=1
     end
   end
@@ -30,7 +30,9 @@ def make_file choice
     new_file = Html.new()
     new_file.create_html
   elsif(choice == "2")
-    create_pdf
+    include CreatePdfFile
+    new_file = Pdf.new()
+    new_file.create_pdf
   end
 end
 
